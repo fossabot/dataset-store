@@ -9,14 +9,13 @@ services:
     working_dir: /app
     depends_on:
       - minio
-    env_file:
-      - ./.env
     environment:
       NODE_ENV: development
-      PORT: 3000 # HOST PORT
+      HOST_PORT: ${HOST_PORT:-3000}
+      CONTAINER_PORT: ${CONTAINER_PORT:-3000}
     ports:
-      - 3000:3000 # [CONTAINER_PORT]:[HOST_PORT]
-    command: npm run start
+      - ${CONTAINER_PORT:-3000}:${HOST_PORT:-3000}
+    command: npm run docker-start
 
   minio:
     image: minio/minio

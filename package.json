@@ -4,6 +4,7 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon --exec babel-node src/server.js",
+    "docker-start": "echo \"Docker container running on port: $CONTAINER_PORT\" && npm run start",
     "test": "npx jest"
   },
   "dependencies": {
