@@ -1,8 +1,8 @@
 import config from '../config/config';
 
-const minio = require('minio');
+const Minio = require('minio');
 
-const minioClient = new minio.Client({
+const minioClient = new Minio.Client({
   endPoint: config.MINIO_HOST,
   port: config.MINIO_PORT,
   useSSL: false,
