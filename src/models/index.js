@@ -1,5 +1,5 @@
-import store from './store';
+import store_ from './store';
+import bucket_ from './bucket';
 
-module.exports = {
-  store,
-};
+export const Store = store_;
+export const Bucket = bucket_;
