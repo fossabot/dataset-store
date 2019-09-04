@@ -13,7 +13,7 @@ router.use((req, res, next) => {
     else {
       Bucket.createBucket(config.MINIO_BUCKET, (success) => {
         if (success) next();
-        else res.sendStatus(400);
+        else res.sendStatus(500);
       });
     }
   });
