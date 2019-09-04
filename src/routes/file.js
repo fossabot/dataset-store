@@ -8,12 +8,14 @@ const router = Router();
 
 // Verifies if bucket already exists, otherwise create it
 router.use((req, res, next) => {
-  Bucket.bucketExists(config.MINIO_BUCKET, (exists) => {
-    if (exists) next('route');
-    else {
-      Bucket.createBucket(config.MINIO_BUCKET, (success) => {
+  Bucket.bucketExists(config.MINIO_BUCKET, (exists, err1) => {
+    if (exists) next();
+    else if (err1) {
+      res.status(500).json({ message: err1 });
+    } else {
+      Bucket.createBucket(config.MINIO_BUCKET, (success, err2) => {
         if (success) next();
-        else res.sendStatus(500);
+        else res.status(500).json({ message: err2 });
       });
     }
   });
@@ -23,18 +25,22 @@ router.post(
   '/',
   Multer({ dest: `./${config.MINIO_UPLOAD_FOLDER_NAME}/` }).single('file'),
   (req, res) => {
-    Store.fPutObject(
-      config.MINIO_BUCKET,
-      req.file.originalname,
-      req.file.path,
-      { 'Content-Type': 'application/octet-stream' },
-      (err) => {
-        if (err) {
-          return console.log(err);
+    if (req.file) {
+      Store.fPutObject(
+        config.MINIO_BUCKET,
+        req.file.originalname,
+        req.file.path,
+        { 'Content-Type': 'application/octet-stream' },
+        (err) => {
+          if (err) {
+            return res.status(500).json({ message: err.message });
+          }
+          return res.send(req.file);
         }
-        return res.send(req.file);
-      }
-    );
+      );
+    } else {
+      res.status(400).json({ message: 'Missing file.' });
+    }
   }
 );
 
