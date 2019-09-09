@@ -11,7 +11,7 @@ const uploadFile = (bucketName, file) => {
       },
       (err) => {
         if (err) reject(err);
-        resolve();
+        resolve(true);
       }
     );
   });
