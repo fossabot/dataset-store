@@ -1,24 +1,22 @@
 import minioClient from './store';
 
-const createBucket = (bucketName, fn) => {
-  minioClient.makeBucket(bucketName, (err) => {
-    if (err) {
-      console.log(err);
-      return fn(false, err.message);
-    }
-
-    return fn(true);
+const createBucket = (bucketName) => {
+  return new Promise((resolve, reject) => {
+    minioClient.makeBucket(bucketName, (err) => {
+      if (err) {
+        reject(err);
+      }
+      resolve();
+    });
   });
 };
 
-const bucketExists = (bucketName, fn) => {
-  minioClient.bucketExists(bucketName, (err, exists) => {
-    if (err) {
-      console.log(err);
-      return fn(false, err.message);
-    }
-
-    return fn(exists);
+const bucketExists = (bucketName) => {
+  return new Promise((resolve, reject) => {
+    minioClient.bucketExists(bucketName, (err, exists) => {
+      if (err) reject(err);
+      resolve(exists);
+    });
   });
 };
 
