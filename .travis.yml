@@ -15,8 +15,7 @@ before_script:
 
 script:
   - snyk test
-  - npm test -- --collectCoverage
-
+  - npm run test-coverage
 after_script:
   - codecov
 

@@ -18,6 +18,7 @@ services:
     command: npm run docker-start
 
   minio:
+    container_name: '${MINIO_HOST:-minio}'
     image: minio/minio
     volumes:
       - data:/data
@@ -33,5 +34,39 @@ services:
       timeout: 20s
       retries: 3
 
+  test:
+    container_name: dataset-store
+    image: node:lts-alpine
+    volumes:
+      - ./:/app
+    working_dir: /app
+    depends_on:
+      - minioTest
+    environment:
+      NODE_ENV: development
+      HOST_PORT: ${HOST_PORT:-3000}
+      CONTAINER_PORT: ${CONTAINER_PORT:-3000}
+    ports:
+      - ${CONTAINER_PORT:-3000}:${HOST_PORT:-3000}
+    command: npm run docker-start
+
+  minioTest:
+    container_name: '${MINIO_HOST:-minio}'
+    image: minio/minio
+    volumes:
+      - dataTest:/data
+    ports:
+      - '${MINIO_PORT:-9000}:9000'
+    environment:
+      MINIO_ACCESS_KEY: '${MINIO_ACCESS_KEY:-minio}'
+      MINIO_SECRET_KEY: '${MINIO_SECRET_KEY:-minio123}'
+    command: server /data
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://minio:9000/minio/health/live']
+      interval: 1m30s
+      timeout: 20s
+      retries: 3
+
 volumes:
   data:
+  dataTest:

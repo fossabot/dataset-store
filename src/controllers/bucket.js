@@ -7,16 +7,14 @@ const verifyBucket = (req, res, next) => {
   Bucket.bucketExists(bucketName)
     .then((exists) => {
       if (exists) next();
-      else {
+      else
         Bucket.createBucket(bucketName)
-          .then((err) => {
-            if (!err) next();
-            else res.sendStatus(500);
+          .then(() => {
+            next();
           })
           .catch(() => {
             res.sendStatus(500);
           });
-      }
     })
     .catch(() => {
       res.sendStatus(500);

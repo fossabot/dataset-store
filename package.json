@@ -5,7 +5,8 @@
   "scripts": {
     "start": "nodemon --exec babel-node src/server.js",
     "docker-start": "echo \"Docker container running on port $CONTAINER_PORT!\" && npm run start",
-    "test": "npx jest"
+    "test": "docker-compose down && docker-compose up -d test && docker-compose exec test npx jest && docker-compose down -v",
+    "test-coverage": "docker-compose down && docker-compose up -d test && docker-compose exec test npx jest --coverage && docker-compose down -v"
   },
   "dependencies": {
     "core-js": "^3.2.1",
@@ -27,6 +28,7 @@
     "jest": "^24.9.0",
     "nodemon": "^1.19.1",
     "prettier": "^1.18.2",
+    "sinon": "^7.4.2",
     "superagent": "^5.1.0",
     "supertest": "^4.0.2"
   }
