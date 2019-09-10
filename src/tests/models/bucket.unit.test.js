@@ -3,7 +3,7 @@ import { Store, Bucket } from '../../models';
 
 describe('Test bucket management functions', () => {
   const createBucket = () => {
-    Bucket.createBucket('testing')
+    Bucket.createBucketStore('testing')
       .then((result) => {
         expect(result).toBeTruthy();
       })
@@ -13,7 +13,7 @@ describe('Test bucket management functions', () => {
   };
 
   const verifyBucket = () => {
-    Bucket.bucketExists('testing')
+    Bucket.bucketExistsStore('testing')
       .then((exists) => {
         expect(exists).toBeTruthy();
       })

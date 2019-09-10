@@ -1,6 +1,6 @@
 import minioClient from './store';
 
-const createBucket = (bucketName) => {
+const createBucketStore = (bucketName) => {
   return new Promise((resolve, reject) => {
     minioClient.makeBucket(bucketName, (err) => {
       if (err) reject(err);
@@ -9,7 +9,7 @@ const createBucket = (bucketName) => {
   });
 };
 
-const bucketExists = (bucketName) => {
+const bucketExistsStore = (bucketName) => {
   return new Promise((resolve, reject) => {
     minioClient.bucketExists(bucketName, (err, exists) => {
       if (err) reject(err);
@@ -19,6 +19,6 @@ const bucketExists = (bucketName) => {
 };
 
 module.exports = {
-  createBucket,
-  bucketExists,
+  createBucketStore,
+  bucketExistsStore,
 };

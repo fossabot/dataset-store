@@ -7,8 +7,8 @@ describe('Test bucket middleware controller', () => {
   const nextSpy = sinon.spy();
   const spy = sinon.spy(Bucket, 'verifyBucket');
 
-  const stubBucketExists = sinon.stub(BucketModel, 'bucketExists');
-  const stubCreateBucket = sinon.stub(BucketModel, 'createBucket');
+  const stubBucketExists = sinon.stub(BucketModel, 'bucketExistsStore');
+  const stubCreateBucket = sinon.stub(BucketModel, 'createBucketStore');
 
   const verifySuccess = async () => {
     const req = httpMocks.createRequest();
