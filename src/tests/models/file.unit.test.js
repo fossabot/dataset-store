@@ -3,7 +3,7 @@ import { Store, File } from '../../models';
 
 describe('Test file management functions.', () => {
   const uploadFile = (file) => {
-    File.uploadFile('testing', file)
+    File.uploadFileStore('testing', file)
       .then((result) => {
         expect(result).toBeTruthy();
       })

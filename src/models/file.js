@@ -1,6 +1,6 @@
 import minioClient from './store';
 
-const uploadFile = (bucketName, file) => {
+const uploadFileStore = (bucketName, file) => {
   return new Promise((resolve, reject) => {
     minioClient.fPutObject(
       bucketName,
@@ -18,5 +18,5 @@ const uploadFile = (bucketName, file) => {
 };
 
 module.exports = {
-  uploadFile,
+  uploadFileStore,
 };

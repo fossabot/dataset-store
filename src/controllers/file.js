@@ -1,9 +1,9 @@
 import config from '../config/config';
 import { File } from '../models';
 
-const uploadFile = (req, res) => {
+const uploadFile = async (req, res) => {
   if (req.file) {
-    File.uploadFile(config.MINIO_BUCKET, req.file)
+    await File.uploadFileStore(config.MINIO_BUCKET, req.file)
       .then(() => {
         res
           .status(200)
@@ -13,8 +13,9 @@ const uploadFile = (req, res) => {
         res.sendStatus(500); // Internal Server Error!
       });
   } else {
-    res.status(400).json({ message: 'Missing file.' }); // File missing!
+    await res.status(400).json({ message: 'Missing file.' }); // File missing!
   }
+  return res;
 };
 
 module.exports = {
