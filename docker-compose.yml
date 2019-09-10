@@ -18,6 +18,7 @@ services:
     command: npm run docker-start
 
   minio:
+    container_name: '${MINIO_HOST:-minio}'
     image: minio/minio
     volumes:
       - data:/data

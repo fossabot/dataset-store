@@ -10,6 +10,4 @@ const minioClient = new Minio.Client({
   secretKey: config.MINIO_SECRET_KEY,
 });
 
-module.exports = {
-  minioClient,
-};
+export { minioClient as default };
