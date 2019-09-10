@@ -2,6 +2,32 @@ import sinon from 'sinon';
 import { Store, Dataset } from '../../models';
 
 describe('Test Dataset management functions.', () => {
+  const downloadDataset = () => {
+    Dataset.downloadDatasetStore('testing', 'teste')
+      .then((result) => {
+        expect(result).toBe('a');
+      })
+      .catch((err) => {
+        expect(err).toBe('S3Error');
+      });
+  };
+
+  describe('Test Dataset download function.', () => {
+    const stubDatasetDownload = sinon.stub(Store, 'getObject');
+
+    it('Resolve dataset upload promise.', () => {
+      stubDatasetDownload.yields(null, 'a');
+
+      downloadDataset();
+    });
+
+    it('Force internal server error', () => {
+      stubDatasetDownload.yields('S3Error');
+
+      downloadDataset();
+    });
+  });
+
   const uploadDataset = (file) => {
     Dataset.uploadDatasetStore('testing', file)
       .then((result) => {
