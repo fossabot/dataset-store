@@ -1,12 +1,13 @@
 import config from '../config/config';
 import { Bucket } from '../models';
 
-const verifyBucket = (req, res, next) => {
+const verifyBucket = async (req, res, next) => {
   const bucketName = config.MINIO_BUCKET;
-  Bucket.bucketExists(bucketName)
+  await Bucket.bucketExists(bucketName)
     .then((exists) => {
-      if (exists) next();
-      else
+      if (exists) {
+        next();
+      } else
         Bucket.createBucket(bucketName)
           .then(() => {
             next();
