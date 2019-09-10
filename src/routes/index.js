@@ -1,3 +1,3 @@
-import File from './file';
+import Dataset from './dataset';
 
-export default { File };
+export default { Dataset };

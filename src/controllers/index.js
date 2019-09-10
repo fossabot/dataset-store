@@ -1,5 +1,5 @@
-import file_ from './file';
+import dataset_ from './dataset';
 import bucket_ from './bucket';
 
-export const File = file_;
+export const Dataset = dataset_;
 export const Bucket = bucket_;

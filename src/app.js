@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 
 // Routes
-app.use('/file', routes.File);
+app.use('/datasets', routes.Dataset);
 
 app.get('/', (req, res) => {
   res.status(200).send('PlatIAgro Dataset Store');

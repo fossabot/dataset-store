@@ -1,22 +1,22 @@
 import sinon from 'sinon';
 import httpMocks from 'node-mocks-http';
-import { File } from '../../controllers';
-import { File as FileModel } from '../../models';
+import { Dataset } from '../../controllers';
+import { Dataset as DatasetModel } from '../../models';
 
-describe('Test UploadFile controller.', () => {
+describe('Test UploadDataset controller.', () => {
   const checkResult = async (req, expectedStatusCode) => {
     const res = httpMocks.createResponse();
 
-    const result = await File.uploadFile(req, res);
+    const result = await Dataset.uploadDataset(req, res);
     expect(result.statusCode).toBe(expectedStatusCode);
   };
 
-  const stubUploadFile = sinon.stub(FileModel, 'uploadFileStore');
+  const stubUploadDataset = sinon.stub(DatasetModel, 'uploadDatasetStore');
 
   const file = { originalname: 'test.csv', path: '../testFiles/test.csv' };
 
-  it('Testing file upload succesfully.', () => {
-    stubUploadFile.resolves(true);
+  it('Testing dataset upload succesfully.', () => {
+    stubUploadDataset.resolves(true);
 
     const req = httpMocks.createRequest();
 
@@ -25,8 +25,8 @@ describe('Test UploadFile controller.', () => {
     checkResult(req, 200);
   });
 
-  it('Testing error on file upload.', () => {
-    stubUploadFile.rejects('S3Error');
+  it('Testing error on dataset upload.', () => {
+    stubUploadDataset.rejects('S3Error');
 
     const req = httpMocks.createRequest();
 

@@ -1,9 +1,9 @@
 import config from '../config/config';
-import { File } from '../models';
+import { Dataset } from '../models';
 
-const uploadFile = async (req, res) => {
+const uploadDataset = async (req, res) => {
   if (req.file) {
-    await File.uploadFileStore(config.MINIO_BUCKET, req.file)
+    await Dataset.uploadDatasetStore(config.MINIO_BUCKET, req.file)
       .then(() => {
         res
           .status(200)
@@ -19,5 +19,5 @@ const uploadFile = async (req, res) => {
 };
 
 module.exports = {
-  uploadFile,
+  uploadDataset,
 };
