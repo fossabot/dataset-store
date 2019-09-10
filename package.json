@@ -2,6 +2,12 @@
   "name": "dataset-store",
   "version": "0.1.0",
   "main": "app.js",
+  "jest": {
+    "collectCoverageFrom": [
+      "src/*/*.js",
+      "!src/config/*.js"
+    ]
+  },
   "scripts": {
     "start": "nodemon --exec babel-node src/server.js",
     "docker-start": "echo \"Docker container running on port $CONTAINER_PORT!\" && npm run start",
