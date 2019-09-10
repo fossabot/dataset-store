@@ -1,5 +1,14 @@
 import minioClient from './store';
 
+const downloadDatasetStore = (bucketName, filename) => {
+  return new Promise((resolve, reject) => {
+    minioClient.getObject(bucketName, filename, (err, stream) => {
+      if (err) reject(err);
+      resolve(stream);
+    });
+  });
+};
+
 const uploadDatasetStore = (bucketName, file) => {
   return new Promise((resolve, reject) => {
     minioClient.fPutObject(
@@ -18,5 +27,6 @@ const uploadDatasetStore = (bucketName, file) => {
 };
 
 module.exports = {
+  downloadDatasetStore,
   uploadDatasetStore,
 };
