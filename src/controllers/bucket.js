@@ -3,7 +3,6 @@ import { Bucket } from '../models';
 
 const verifyBucket = (req, res, next) => {
   const bucketName = config.MINIO_BUCKET;
-
   Bucket.bucketExists(bucketName)
     .then((exists) => {
       if (exists) next();
