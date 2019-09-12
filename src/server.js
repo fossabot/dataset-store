@@ -3,5 +3,5 @@ import app from './app';
 
 const port = PORT;
 app.listen(port, () => {
-  console.log(`Running on port ${port}!`);
+  console.log(`API running on port ${port}!`);
 });

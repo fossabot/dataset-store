@@ -78,3 +78,16 @@ Or:
 $ yarn
 $ yarn test
 ```
+
+To run tests with code coverage:
+
+```bash
+$ npm run test-coverage
+```
+
+Or:
+
+```bash
+
+$ yarn test-coverage
+```
