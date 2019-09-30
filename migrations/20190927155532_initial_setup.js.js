@@ -26,6 +26,8 @@ exports.up = function(knex) {
 
     knex.schema.createTable('datasets', function(t) {
       t.string('uuid', 255).primary();
+      t.string('bucketName', 255).notNull();
+      t.string('originalName', 255).notNull();
     }),
 
     knex.schema.createTable('columns', function(t) {

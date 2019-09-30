@@ -9,7 +9,7 @@ const router = Router();
 // Verifies if bucket already exists, otherwise create it
 router.use(Bucket.verifyBucket);
 
-router.get('/:datasetName', Dataset.downloadDataset);
+router.get('/:uuid', Dataset.downloadDataset);
 
 router.post(
   '/',
