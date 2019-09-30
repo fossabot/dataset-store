@@ -1,80 +1,116 @@
 import sinon from 'sinon';
 import httpMocks from 'node-mocks-http';
 import { PassThrough } from 'stream';
-import { Dataset } from '../../controllers';
-import { Dataset as DatasetModel } from '../../models';
 
-describe('Test DownloadDataset controller.', () => {
-  const checkResult = async (expectedStatusCode) => {
-    const res = httpMocks.createResponse();
-    const req = httpMocks.createRequest();
+import { Dataset as Controller } from '../../controllers';
+import { Dataset as Model } from '../../models';
 
-    req.params.datasetName = 'test.csv';
+describe('Test Experiment Controller methods', () => {
+  const stubDatasetGetById = sinon.stub(Model, 'getById');
+  const stubDatasetCreate = sinon.stub(Model, 'create');
 
-    const result = await Dataset.downloadDataset(req, res);
-    expect(result.statusCode).toBe(expectedStatusCode);
-  };
+  const mockedDataset = new Model(
+    '2864d96c-9171-43d1-9b89-af9828c30e61',
+    'uploads',
+    'data.csv'
+  );
 
-  const stubDownloadDataset = sinon.stub(DatasetModel, 'downloadDatasetStore');
+  const stubDownloadDataset = sinon.stub(mockedDataset, 'downloadStream');
+  const stubUploadDataset = sinon.stub(mockedDataset, 'uploadFile');
 
-  it('Testing dataset download succesfully.', () => {
-    const mockedStream = new PassThrough();
+  const mockedStream = new PassThrough();
 
-    stubDownloadDataset.resolves(mockedStream);
+  describe('Test getById Dataset controller', () => {
+    const datasetGetByIdVerify = async (expectedCode) => {
+      const req = httpMocks.createRequest({
+        methods: 'GET',
+        url: '/dataset/:uuid',
+        params: {
+          uuid: '2864d96c-9171-43d1-9b89-af9828c30e61',
+        },
+      });
+      const res = httpMocks.createResponse();
 
-    checkResult(200);
-  });
+      const result = await Controller.downloadDataset(req, res);
 
-  it('Testing error on dataset download.', () => {
-    stubDownloadDataset.rejects('S3Error');
+      expect(result.statusCode).toBe(expectedCode);
+    };
 
-    checkResult(500);
-  });
+    it('Resolves downloadDatase', () => {
+      stubDatasetGetById.resolves(mockedDataset);
+      stubDownloadDataset.resolves(mockedStream);
 
-  it('Testing send a invalid filename.', () => {
-    stubDownloadDataset.rejects({
-      message: 'The specified key does not exist.',
+      datasetGetByIdVerify(200);
     });
 
-    checkResult(400);
-  });
-});
+    it('Rejects downloadDatase', () => {
+      stubDatasetGetById.resolves(mockedDataset);
+      stubDownloadDataset.rejects('S3Error');
 
-describe('Test UploadDataset controller.', () => {
-  const checkResult = async (req, expectedStatusCode) => {
-    const res = httpMocks.createResponse();
+      datasetGetByIdVerify(500);
+    });
 
-    const result = await Dataset.uploadDataset(req, res);
-    expect(result.statusCode).toBe(expectedStatusCode);
-  };
+    it('Rejects getById model, invalid key', () => {
+      stubDatasetGetById.rejects({
+        message: 'The specified key does not exist.',
+      });
 
-  const stubUploadDataset = sinon.stub(DatasetModel, 'uploadDatasetStore');
+      datasetGetByIdVerify(400);
+    });
 
-  const file = { originalname: 'test.csv', path: '../testFiles/test.csv' };
+    it('Rejects getById model, forced internal server error', () => {
+      stubDatasetGetById.rejects('S3Error');
 
-  it('Testing dataset upload succesfully.', () => {
-    stubUploadDataset.resolves(true);
-
-    const req = httpMocks.createRequest();
-
-    req.file = file;
-
-    checkResult(req, 200);
+      datasetGetByIdVerify(500);
+    });
   });
 
-  it('Testing error on dataset upload.', () => {
-    stubUploadDataset.rejects('S3Error');
+  describe('Test create Dataset controller', () => {
+    const file = { originalname: 'test.csv', path: '../testFiles/test.csv' };
 
-    const req = httpMocks.createRequest();
+    const datasetGetByIdVerify = async (req, expectedCode) => {
+      const res = httpMocks.createResponse();
 
-    req.file = file;
+      const result = await Controller.uploadDataset(req, res);
+      expect(result.statusCode).toBe(expectedCode);
+    };
 
-    checkResult(req, 500);
-  });
+    it('Resolves uploadDataset', () => {
+      stubDatasetCreate.resolves(mockedDataset);
+      stubUploadDataset.resolves(mockedStream);
 
-  it('Sending empty request.', () => {
-    const req = httpMocks.createRequest();
+      const req = httpMocks.createRequest();
 
-    checkResult(req, 400);
+      req.file = file;
+
+      datasetGetByIdVerify(req, 200);
+    });
+
+    it('Rejects uploadDataset', () => {
+      stubDatasetCreate.resolves(mockedDataset);
+      stubUploadDataset.rejects('S3Error');
+
+      const req = httpMocks.createRequest();
+
+      req.file = file;
+
+      datasetGetByIdVerify(req, 500);
+    });
+
+    it('Rejects createDataset, forced internal server error', () => {
+      stubDatasetCreate.rejects('S3Error');
+
+      const req = httpMocks.createRequest();
+
+      req.file = file;
+
+      datasetGetByIdVerify(req, 500);
+    });
+
+    it('Send empty request', () => {
+      const req = httpMocks.createRequest();
+
+      datasetGetByIdVerify(req, 400);
+    });
   });
 });
