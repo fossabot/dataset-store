@@ -3,13 +3,16 @@ import Multer from 'multer';
 
 import config from '../config/config';
 import { Dataset, Bucket } from '../controllers';
+import ColumnRoutes from './column';
 
 const router = Router();
 
 // Verifies if bucket already exists, otherwise create it
 router.use(Bucket.verifyBucket);
 
-router.get('/:uuid', Dataset.downloadDataset);
+router.use('/:datasetId/columns', ColumnRoutes);
+
+router.get('/:datasetId', Dataset.downloadDataset);
 
 router.post(
   '/',
