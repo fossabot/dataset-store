@@ -17,7 +17,7 @@ services:
     ports:
       - ${CONTAINER_PORT:-3000}:${HOST_PORT:-3000}
     command:
-      ["-c", "/opt/wait-for.sh ${DB_HOST:-mysql}:${DB_PORT:-3306} && knex migrate:latest && npm run docker-start",]
+      ["-c", "npm install && /opt/wait-for.sh ${DB_HOST:-mysql}:${DB_PORT:-3306} && knex migrate:latest && npm run docker-start",]
     entrypoint: ["/bin/sh"]
 
   db:
