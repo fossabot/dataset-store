@@ -1,7 +1,7 @@
-import { PORT } from './config/config';
+import { Config } from './config';
 import app from './app';
 
-const port = PORT;
+const port = Config.PORT;
 app.listen(port, () => {
   console.log(`API running on port ${port}!`);
 });

@@ -3,11 +3,12 @@ version: '3'
 services:
   app:
     container_name: dataset-store
-    image: node:lts-alpine
+    build: .
     volumes:
       - ./:/app
     working_dir: /app
     depends_on:
+      - db
       - minio
     environment:
       NODE_ENV: development
@@ -15,13 +16,27 @@ services:
       CONTAINER_PORT: ${CONTAINER_PORT:-3000}
     ports:
       - ${CONTAINER_PORT:-3000}:${HOST_PORT:-3000}
-    command: npm run docker-start
+    command:
+      ["-c", "/opt/wait-for.sh ${DB_HOST:-mysql}:${DB_PORT:-3306} && knex migrate:latest && npm run docker-start",]
+    entrypoint: ["/bin/sh"]
+
+  db:
+    container_name: '${DB_HOST:-mysql}'
+    image: mysql:5.7
+    restart: always
+    volumes:
+      - ./data:/var/lib/mysql
+    environment:
+      - MYSQL_USER=${DB_USER:-user}
+      - MYSQL_PASSWORD=${DB_PASSWORD:-secret}
+      - MYSQL_DATABASE=${DB_DATABASE:-projects}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD:-supersecret}
 
   minio:
     container_name: '${MINIO_HOST:-minio}'
     image: minio/minio
     volumes:
-      - data:/data
+      - ./data-minio:/var/lib/minio
     ports:
       - '${MINIO_PORT:-9000}:9000'
     environment:
@@ -33,6 +48,3 @@ services:
       interval: 1m30s
       timeout: 20s
       retries: 3
-
-volumes:
-  data:
