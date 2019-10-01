@@ -1,11 +1,20 @@
 FROM node:lts-alpine
 
-RUN npm install -g knex && \
-    apk add netcat-openbsd;
+WORKDIR /home/node/app
+
+COPY ./package* ./
+
+RUN npm install && \
+    npm cache clear --force
+
+COPY . .
 
 # Expose ports (for orchestrators and dynamic reverse proxies)
 EXPOSE 3000
 
-COPY wait-for.sh /opt/wait-for.sh
+RUN npm install -g knex && \
+    apk add netcat-openbsd;
+
+COPY wait-for.sh /opt/wait-for.sh 
 
 RUN ["chmod", "+x", "/opt/wait-for.sh"]
