@@ -41,8 +41,7 @@ const uploadHeader = async (req, res) => {
               payload: header,
             }); // Success!
           })
-          .catch((err) => {
-            console.log(err);
+          .catch(() => {
             header.delete();
             res.sendStatus(500); // Internal Server Error!
           });

@@ -81,7 +81,7 @@ class Header {
         .from('headers')
         .where('uuid', '=', this.uuid)
         .then(() => {
-          resolve();
+          resolve(true);
         })
         .catch((err) => {
           reject(err);
