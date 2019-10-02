@@ -30,6 +30,12 @@ exports.up = function(knex) {
       t.string('originalName', 255).notNull();
     }),
 
+    knex.schema.createTable('headers', function(t) {
+      t.string('uuid', 255).primary();
+      t.string('bucketName', 255).notNull();
+      t.string('originalName', 255).notNull();
+    }),
+
     knex.schema.createTable('columns', function(t) {
       t.string('uuid', 255).primary();
       t.string('datasetId', 255)
@@ -44,6 +50,7 @@ exports.up = function(knex) {
 exports.down = function(knex) {
   return Promise.all([
     knex.schema.dropTable('columns'),
+    knex.schema.dropTable('headers'),
     knex.schema.dropTable('datasets'),
     knex.schema.dropTable('pipelines'),
     knex.schema.dropTable('experiments'),

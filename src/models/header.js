@@ -1,7 +1,7 @@
 import { Knex } from '../config';
 import minioClient from './store';
 
-class Dataset {
+class Header {
   constructor(uuid, bucketName, originalName) {
     this.uuid = uuid;
     this.bucketName = bucketName;
@@ -15,7 +15,7 @@ class Dataset {
   static getById(uuid) {
     return new Promise((resolve, reject) => {
       Knex.select('*')
-        .from('datasets')
+        .from('headers')
         .where('uuid', '=', uuid)
         .first()
         .then((row) => {
@@ -39,7 +39,7 @@ class Dataset {
         bucketName,
         originalName,
       })
-        .into('datasets')
+        .into('headers')
         .then(() => {
           resolve(this.fromDBRecord({ uuid, bucketName, originalName }));
         })
@@ -74,6 +74,20 @@ class Dataset {
       });
     });
   }
+
+  async delete() {
+    return new Promise((resolve, reject) => {
+      Knex.delete({})
+        .from('headers')
+        .where('uuid', '=', this.uuid)
+        .then(() => {
+          resolve();
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
 }
 
-export { Dataset as default };
+export { Header as default };
