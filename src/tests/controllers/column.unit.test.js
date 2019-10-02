@@ -95,17 +95,14 @@ describe('Test Column Controller methods', () => {
   });
 
   describe('Test Create Column controller', () => {
-    const columnCreateVerify = async (expectedCode) => {
+    const columnCreateVerify = async (bodyParams, expectedCode) => {
       const req = httpMocks.createRequest({
         method: 'POST',
         url: '/datasets/:datasetId/columns',
         params: {
           datasetId: '2864d96c-9171-43d1-9b89-af9828c30e61',
         },
-        body: {
-          name: 'Measure1',
-          datatype: 'Numeric',
-        },
+        body: bodyParams,
       });
       const res = httpMocks.createResponse();
 
@@ -122,18 +119,22 @@ describe('Test Column Controller methods', () => {
         datatype: 'Numeric',
       });
 
-      columnCreateVerify(200);
+      columnCreateVerify({ name: 'Measure1', datatype: 'Numeric' }, 200);
     });
 
     it('Rejects create model', () => {
       stubColumnCreate.rejects(Error('Forced error'));
 
-      columnCreateVerify(500);
+      columnCreateVerify({ name: 'Measure1', datatype: 'Numeric' }, 500);
+    });
+
+    it('Send invalid datatype', () => {
+      columnCreateVerify({ name: 'Measure1', datatype: 'Text' }, 400);
     });
   });
 
   describe('Test Update Column controller', () => {
-    const columnUpdateVerify = async (expectedCode) => {
+    const columnUpdateVerify = async (bodyParams, expectedCode) => {
       const req = httpMocks.createRequest({
         method: 'PATCH',
         url: '/datasets/:datasetId/columns/:columnId',
@@ -141,9 +142,7 @@ describe('Test Column Controller methods', () => {
           datasetId: '2864d96c-9171-43d1-9b89-af9828c30e61',
           columnId: 'a2958bc1-a2c5-424f-bcb3-cf4701f4a423',
         },
-        body: {
-          datatype: 'Categorical',
-        },
+        body: bodyParams,
       });
       const res = httpMocks.createResponse();
 
@@ -157,7 +156,7 @@ describe('Test Column Controller methods', () => {
 
       stubColumnGetById.resolves(columnMocked);
 
-      columnUpdateVerify(200);
+      columnUpdateVerify({ datatype: 'Categorical' }, 200);
     });
 
     it('Rejects update model', () => {
@@ -165,19 +164,23 @@ describe('Test Column Controller methods', () => {
 
       stubColumnGetById.resolves(columnMocked);
 
-      columnUpdateVerify(500);
+      columnUpdateVerify({ datatype: 'Categorical' }, 500);
     });
 
     it('Rejects getById model, forced internal server error', () => {
       stubColumnGetById.rejects(Error('Forced error'));
 
-      columnUpdateVerify(500);
+      columnUpdateVerify({ datatype: 'Categorical' }, 500);
     });
 
     it('Rejects getById model, invalid uuid', () => {
       stubColumnGetById.rejects(Error('Invalid UUID.'));
 
-      columnUpdateVerify(400);
+      columnUpdateVerify({ datatype: 'Categorical' }, 400);
+    });
+
+    it('Send invalid datatype', () => {
+      columnUpdateVerify({ datatype: 'Text' }, 400);
     });
   });
 });
