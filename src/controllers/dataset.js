@@ -3,8 +3,8 @@ import config from '../config/config';
 import { Dataset } from '../models';
 
 const downloadDataset = async (req, res) => {
-  const { datasetId } = req.params;
-  await Dataset.getById(datasetId)
+  const { uuid } = req.params;
+  await Dataset.getById(uuid)
     .then((dataset) => {
       dataset
         .downloadStream()
