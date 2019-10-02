@@ -4,9 +4,9 @@ services:
   app:
     container_name: dataset-store
     build: .
+    working_dir: /home/node/app
     volumes:
-      - ./:/app
-    working_dir: /app
+      - ./:/home/node/app
     depends_on:
       - db
       - minio

@@ -42,7 +42,8 @@ exports.up = function(knex) {
         .references('uuid')
         .inTable('datasets')
         .notNull();
-      t.string('dataType').notNull();
+      t.string('name').notNull();
+      t.string('datatype').notNull();
     }),
   ]);
 };
