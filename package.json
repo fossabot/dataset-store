@@ -12,7 +12,7 @@
     "start": "nodemon --exec babel-node src/server.js",
     "docker-start": "echo \"Docker container running on port $CONTAINER_PORT!\" && npm run start",
     "test": "npx jest",
-    "test-coverage": "npx jest --coverage"
+    "test-coverage": "npx jest --coverage --silent"
   },
   "dependencies": {
     "core-js": "^3.2.1",

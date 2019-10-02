@@ -2,4 +2,6 @@ README.md
 LICENSE
 node_modules
 uploads
+data
+data-minio
 coverage
