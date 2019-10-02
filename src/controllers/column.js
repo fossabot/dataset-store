@@ -61,18 +61,20 @@ const update = async (req, res) => {
         res.sendStatus(500);
       }
     });
+  return res;
 };
 
 const create = async (req, res) => {
   const { datasetId } = req.params;
   const { name, datatype } = req.body;
 
-  Column.create(uuidv4(), name, datatype, datasetId)
-    .then((result) => res.status(200).json({ payload: result }))
+  await Column.create(uuidv4(), name, datatype, datasetId)
+    .then((result) => {
+      res.status(200).json({ payload: result });
+    })
     .catch(() => {
       res.sendStatus(500);
     });
-
   return res;
 };
 
