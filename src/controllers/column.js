@@ -13,9 +13,9 @@ const validateDatatype = async (datatype) => {
 };
 
 const getAll = async (req, res) => {
-  const { datasetId } = req.params;
+  const { headerId } = req.params;
 
-  await Column.getAll(datasetId)
+  await Column.getAll(headerId)
     .then((columns) => {
       res.status(200).json({ payload: columns });
     })
@@ -81,12 +81,12 @@ const update = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  const { datasetId } = req.params;
+  const { headerId } = req.params;
   const { name, datatype } = req.body;
 
   await validateDatatype(datatype)
     .then(async () => {
-      await Column.create(uuidv4(), name, datatype, datasetId)
+      await Column.create(uuidv4(), name, datatype, headerId)
         .then((result) => {
           res.status(200).json({ payload: result });
         })

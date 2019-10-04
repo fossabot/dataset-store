@@ -1,27 +1,22 @@
 import { Knex } from '../config';
 
 class Column {
-  constructor(uuid, datasetId, name, datatype) {
+  constructor(uuid, headerId, name, datatype) {
     this.uuid = uuid;
-    this.datasetId = datasetId;
+    this.headerId = headerId;
     this.name = name;
     this.datatype = datatype;
   }
 
   static fromDBRecord(record) {
-    return new this(
-      record.uuid,
-      record.datasetId,
-      record.name,
-      record.datatype
-    );
+    return new this(record.uuid, record.headerId, record.name, record.datatype);
   }
 
-  static async getAll(datasetId) {
+  static async getAll(headerId) {
     return new Promise((resolve, reject) => {
       Knex.select('*')
         .from('columns')
-        .where('datasetId', '=', datasetId)
+        .where('headerId', '=', headerId)
         .then((rows) => {
           const columns = rows.map((r) => {
             return this.fromDBRecord(r);
@@ -52,17 +47,17 @@ class Column {
     });
   }
 
-  static async create(uuid, name, datatype, datasetId) {
+  static async create(uuid, name, datatype, headerId) {
     return new Promise((resolve, reject) => {
       Knex.insert({
         uuid,
         name,
         datatype,
-        datasetId,
+        headerId,
       })
         .into('columns')
         .then(() => {
-          resolve(this.fromDBRecord({ uuid, name, datatype, datasetId }));
+          resolve(this.fromDBRecord({ uuid, name, datatype, headerId }));
         })
         .catch((err) => {
           reject(err);
