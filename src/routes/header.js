@@ -8,7 +8,7 @@ const router = Router();
 // Verifies if bucket already exists, otherwise create it
 router.use(Bucket.verifyBucket);
 
-router.use('/:datasetId/columns', ColumnRoutes);
+router.use('/:headerId/columns', ColumnRoutes);
 
 router.get('/:uuid', Header.downloadHeader);
 
