@@ -8,6 +8,7 @@
   - [Run Docker](#run-docker)
   - [Run Local](#run-local)
 - [Testing](#testing)
+- [API](#api)
 
 ## Introduction
 
@@ -35,7 +36,7 @@ The application can be run locally or in a docker container, the requirements fo
 ## Quick Start
 
 Make sure you have all requirements installed on your computer, then you can run the server in a [docker container](#run-docker) or in your [local machine](#run-local).
-Firstly you need to create a .env file, see the .env.example.
+**Firstly you need to create a .env file, see the .env.example.**
 
 ### Run Docker
 
@@ -90,4 +91,80 @@ Or:
 ```bash
 
 $ yarn test-coverage
+```
+
+## API
+
+API Reference with examples.
+
+### Upload
+
+**Upload Dataset and Header:** <br>
+method: POST <br>
+url: /datasets
+
+With header:
+
+```
+curl -X POST \
+  http://localhost:3000/datasets/ \
+  -H 'Content-Type: multipart/form-data' \
+  -F dataset=@/l/disk0/mferraz/Documentos/platia/BigML_Dataset_Machine_Failure_ok.csv \
+  -F header=@/l/disk0/mferraz/Documentos/platia/feature_type_ok.txt
+```
+
+Or:
+
+```
+curl -X POST \
+  http://localhost:3000/datasets/ \
+  -H 'Content-Type: multipart/form-data' \
+  -F dataset=@/l/disk0/mferraz/Documentos/platia/BigML_Dataset_Machine_Failure_ok.csv
+```
+
+In this last case, the API will infer columns types.
+
+### Datasets
+
+**Get Dataset by ID:** <br>
+method: GET <br>
+url: /datasets/:datasetId
+
+```
+curl -X GET \
+  http://localhost:3000/datasets/2270d302-a4d8-449c-a9d0-8c47d1172641
+```
+
+### Headers
+
+**Get Header by ID:** <br>
+method: GET <br>
+url: /headers/:headerId
+
+```
+curl -X GET \
+  http://localhost:3000/headers/9fd5ac4a-bddf-4a02-9f04-bb4810d963b3
+```
+
+### Columns
+
+**Get columns from Header:** <br>
+method: GET <br>
+url: /headers/:headerId/columns
+
+```
+curl -X GET \
+ http://localhost:3000/headers/1a1b337f-f04e-4d17-8658-3420bc46dde2/columns/
+```
+
+**Update Column:** <br>
+method: PATCH <br>
+url: /headers/:headerId/columns/:columnId
+
+```
+curl -X PATCH \
+ http://localhost:3000/datasets/9d84c9d7-23d7-4977-b474-2d9dd5026c79/columns/a2958bc1-a2c5-424f-bcb3-cf4701f4a423 \
+    -d '{
+        "datatype": "DateTime"
+    }'
 ```
