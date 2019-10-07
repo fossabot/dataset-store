@@ -5,8 +5,6 @@ node_js:
 
 dist: trusty
 
-cache: yarn
-
 before_script:
   - rm -rf ./node_modules package-lock.json
   - npm install
@@ -15,7 +13,7 @@ before_script:
 
 script:
   - snyk test
-  - npm run test-coverage
+  - npm run test-coverage -- --clearCache
 after_script:
   - codecov
 

@@ -67,52 +67,42 @@ describe('Test Header Controller methods', () => {
     });
   });
 
-  describe('Test create Header controller', () => {
-    const file = { originalname: 'test.csv', path: '../testFiles/test.csv' };
+  describe('Test upload Header controller', () => {
+    const file = [
+      {
+        originalname: 'test',
+        path: 'data/test.txt',
+      },
+    ];
 
-    const headerGetByIdVerify = async (req, expectedCode) => {
-      const res = httpMocks.createResponse();
-
-      const result = await Controller.uploadHeader(req, res);
-      expect(result.statusCode).toBe(expectedCode);
+    const headerUploadVerify = async () => {
+      Controller.uploadHeader(file)
+        .then((header) => {
+          expect(header).toStrictEqual(mockedHeader);
+        })
+        .catch((err) => {
+          expect(err).toStrictEqual(Error('Forced Error'));
+        });
     };
 
     it('Resolves uploadHeader', () => {
       stubHeaderCreate.resolves(mockedHeader);
       stubUploadHeader.resolves(mockedStream);
 
-      const req = httpMocks.createRequest();
-
-      req.file = file;
-
-      headerGetByIdVerify(req, 200);
-    });
-
-    it('Rejects uploadHeader', () => {
-      stubHeaderCreate.resolves(mockedHeader);
-      stubUploadHeader.rejects('S3Error');
-
-      const req = httpMocks.createRequest();
-
-      req.file = file;
-
-      headerGetByIdVerify(req, 500);
+      headerUploadVerify();
     });
 
     it('Rejects createHeader, forced internal server error', () => {
-      stubHeaderCreate.rejects('S3Error');
+      stubHeaderCreate.rejects(Error('Forced Error'));
 
-      const req = httpMocks.createRequest();
-
-      req.file = file;
-
-      headerGetByIdVerify(req, 500);
+      headerUploadVerify();
     });
 
-    it('Send empty request', () => {
-      const req = httpMocks.createRequest();
+    it('Rejects uploadFile, forced internal server error', () => {
+      stubHeaderCreate.resolves(mockedHeader);
+      stubUploadHeader.rejects(Error('Forced Error'));
 
-      headerGetByIdVerify(req, 400);
+      headerUploadVerify();
     });
   });
 });

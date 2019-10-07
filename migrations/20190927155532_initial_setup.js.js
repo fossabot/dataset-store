@@ -38,12 +38,13 @@ exports.up = function(knex) {
 
     knex.schema.createTable('columns', function(t) {
       t.string('uuid', 255).primary();
-      t.string('datasetId', 255)
+      t.string('headerId', 255)
         .references('uuid')
-        .inTable('datasets')
+        .inTable('headers')
         .notNull();
-      t.string('name').notNull();
-      t.string('datatype').notNull();
+      t.string('name', 255).notNull();
+      t.string('datatype', 255).notNull();
+      t.integer('position', 255).notNull();
     }),
   ]);
 };
