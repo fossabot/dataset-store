@@ -7,4 +7,4 @@ from datatype import DataFrame
 
 DATAFRAME = DataFrame.get_dataframe_from_csv(sys.argv[1])
 
-print(DATAFRAME.columns)
+print(DATAFRAME.get_columns())
