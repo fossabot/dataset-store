@@ -2,7 +2,7 @@ import uuidv4 from 'uuid/v4';
 
 import config from '../config/config';
 import Header from './header';
-import { Dataset } from '../models';
+import { Dataset, Column } from '../models';
 import Scripts from '../utils';
 
 const downloadDataset = async (req, res) => {
@@ -59,18 +59,69 @@ const handleDatasetHeader = async (req, res) => {
       const upHeader = Header.uploadHeader(header);
 
       Promise.all([upDataset, upHeader])
-        .then((datasetResult, headerResult) => {
-          res.status(200).json({
-            message: 'Files uploaded successfully',
-            payload: { dataset: datasetResult, header: headerResult },
-          }); // Success!
+        .then((result) => {
+          const getColumns = Scripts.getColumnNames(dataset[0].path);
+          const getTypes = Scripts.getTypesFromHeader(header[0].path);
+
+          Promise.all([getColumns, getTypes]).then(([[columns], [types]]) => {
+            const createColumns = columns.map((column, index) => {
+              return Column.create(
+                uuidv4(),
+                column.name,
+                types[index].datatype,
+                index,
+                result[1].uuid
+              );
+            });
+
+            Promise.all(createColumns)
+              .then(() => {
+                res.status(200).json({
+                  message: 'Files uploaded successfully',
+                  payload: { dataset: result[0], header: result[1] },
+                }); // Success!
+              })
+              .catch(() => {
+                res.sendStatus(500); // Internal Server Error!
+              });
+          });
         })
         .catch(() => {
           res.sendStatus(500); // Internal Server Error!
         });
     } else {
-      Scripts.inferDatatype(dataset[0].path).then(([columns]) => {
-        res.send({ a: columns });
+      Scripts.inferDatatype(dataset[0].path).then(([columns, headerPath]) => {
+        const upDataset = uploadDataset(dataset);
+        const upHeader = Header.uploadHeader([
+          { originalname: 'inferedHeader', path: headerPath },
+        ]);
+
+        Promise.all([upDataset, upHeader])
+          .then((result) => {
+            const createColumns = columns.columns.map((c, position) => {
+              return Column.create(
+                uuidv4(),
+                c.name,
+                c.datatype,
+                position,
+                result[1].uuid
+              );
+            });
+
+            Promise.all(createColumns)
+              .then(() => {
+                res.status(200).json({
+                  message: 'Files uploaded successfully',
+                  payload: { dataset: result[0], header: result[1] },
+                });
+              })
+              .catch(() => {
+                res.sendStatus(500); // Internal Server Error!
+              });
+          })
+          .catch(() => {
+            res.sendStatus(500); // Internal Server Error!
+          });
       });
     }
   } else {
