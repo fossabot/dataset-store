@@ -133,4 +133,5 @@ const handleDatasetHeader = async (req, res) => {
 module.exports = {
   downloadDataset,
   handleDatasetHeader,
+  uploadDataset,
 };

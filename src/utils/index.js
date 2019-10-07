@@ -1,3 +1,5 @@
-import scripts from './scripts';
+import scripts_ from './scripts';
+import createHeader_ from './createHeader';
 
-export default scripts;
+export const Scripts = scripts_;
+export const createHeader = createHeader_;

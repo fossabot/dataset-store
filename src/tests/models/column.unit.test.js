@@ -15,9 +15,10 @@ describe('Test Column Model methods', () => {
           expect(result).not.toBeNull();
           expect(result).toEqual({
             uuid: 'a2958bc1-a2c5-424f-bcb3-cf4701f4a423',
-            datasetId: '2864d96c-9171-43d1-9b89-af9828c30e61',
+            headerId: '2864d96c-9171-43d1-9b89-af9828c30e61',
             name: 'Measure1',
             datatype: 'Numeric',
+            position: 0,
           });
         })
         .catch((err) => {
@@ -31,9 +32,10 @@ describe('Test Column Model methods', () => {
         where: sinon.stub().returnsThis(),
         first: sinon.stub().resolves({
           uuid: 'a2958bc1-a2c5-424f-bcb3-cf4701f4a423',
-          datasetId: '2864d96c-9171-43d1-9b89-af9828c30e61',
+          headerId: '2864d96c-9171-43d1-9b89-af9828c30e61',
           name: 'Measure1',
           datatype: 'Numeric',
+          position: 0,
         }),
       });
 
@@ -69,9 +71,10 @@ describe('Test Column Model methods', () => {
           expect(result).toEqual([
             {
               uuid: 'a2958bc1-a2c5-424f-bcb3-cf4701f4a423',
-              datasetId: '2864d96c-9171-43d1-9b89-af9828c30e61',
+              headerId: '2864d96c-9171-43d1-9b89-af9828c30e61',
               name: 'Measure1',
               datatype: 'Numeric',
+              position: '0',
             },
           ]);
         })
@@ -83,12 +86,14 @@ describe('Test Column Model methods', () => {
     it('Resolves db query', () => {
       stubKnexSelect.returns({
         from: sinon.stub().returnsThis(),
-        where: sinon.stub().resolves([
+        where: sinon.stub().returnsThis(),
+        orderBy: sinon.stub().resolves([
           {
             uuid: 'a2958bc1-a2c5-424f-bcb3-cf4701f4a423',
-            datasetId: '2864d96c-9171-43d1-9b89-af9828c30e61',
+            headerId: '2864d96c-9171-43d1-9b89-af9828c30e61',
             name: 'Measure1',
             datatype: 'Numeric',
+            position: '0',
           },
         ]),
       });
@@ -100,7 +105,8 @@ describe('Test Column Model methods', () => {
       stubKnexSelect.callsFake(() => {
         return {
           from: sinon.stub().returnsThis(),
-          where: sinon.stub().rejects(Error('Forced error')),
+          where: sinon.stub().returnsThis(),
+          orderBy: sinon.stub().rejects(Error('Forced error')),
         };
       });
 
@@ -114,14 +120,16 @@ describe('Test Column Model methods', () => {
         'a2958bc1-a2c5-424f-bcb3-cf4701f4a423',
         'Measure1',
         'Numeric',
+        0,
         '2864d96c-9171-43d1-9b89-af9828c30e61'
       )
         .then((result) => {
           expect(result).not.toBeNull();
           expect(result).toEqual({
             uuid: 'a2958bc1-a2c5-424f-bcb3-cf4701f4a423',
-            datasetId: '2864d96c-9171-43d1-9b89-af9828c30e61',
+            headerId: '2864d96c-9171-43d1-9b89-af9828c30e61',
             name: 'Measure1',
+            position: 0,
             datatype: 'Numeric',
           });
         })
@@ -157,7 +165,8 @@ describe('Test Column Model methods', () => {
         'a2958bc1-a2c5-424f-bcb3-cf4701f4a423',
         '2864d96c-9171-43d1-9b89-af9828c30e61',
         'Measure1',
-        'Numeric'
+        'Numeric',
+        0
       );
 
       columnMocked

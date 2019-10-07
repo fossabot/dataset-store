@@ -65,52 +65,42 @@ describe('Test Experiment Controller methods', () => {
     });
   });
 
-  describe('Test create Dataset controller', () => {
-    const file = { originalname: 'test.csv', path: '../testFiles/test.csv' };
+  describe('Test upload Dataset controller', () => {
+    const file = [
+      {
+        originalname: 'test',
+        path: 'data/test.txt',
+      },
+    ];
 
-    const datasetGetByIdVerify = async (req, expectedCode) => {
-      const res = httpMocks.createResponse();
-
-      const result = await Controller.uploadDataset(req, res);
-      expect(result.statusCode).toBe(expectedCode);
+    const datasetUploadVerify = async () => {
+      Controller.uploadDataset(file)
+        .then((dataset) => {
+          expect(dataset).toStrictEqual(mockedDataset);
+        })
+        .catch((err) => {
+          expect(err).toStrictEqual(Error('Forced Error'));
+        });
     };
 
     it('Resolves uploadDataset', () => {
       stubDatasetCreate.resolves(mockedDataset);
       stubUploadDataset.resolves(mockedStream);
 
-      const req = httpMocks.createRequest();
-
-      req.file = file;
-
-      datasetGetByIdVerify(req, 200);
-    });
-
-    it('Rejects uploadDataset', () => {
-      stubDatasetCreate.resolves(mockedDataset);
-      stubUploadDataset.rejects('S3Error');
-
-      const req = httpMocks.createRequest();
-
-      req.file = file;
-
-      datasetGetByIdVerify(req, 500);
+      datasetUploadVerify();
     });
 
     it('Rejects createDataset, forced internal server error', () => {
-      stubDatasetCreate.rejects('S3Error');
+      stubDatasetCreate.rejects(Error('Forced Error'));
 
-      const req = httpMocks.createRequest();
-
-      req.file = file;
-
-      datasetGetByIdVerify(req, 500);
+      datasetUploadVerify();
     });
 
-    it('Send empty request', () => {
-      const req = httpMocks.createRequest();
+    it('Rejects uploadFile, forced internal server error', () => {
+      stubDatasetCreate.resolves(mockedDataset);
+      stubUploadDataset.rejects(Error('Forced Error'));
 
-      datasetGetByIdVerify(req, 400);
+      datasetUploadVerify();
     });
   });
 });
