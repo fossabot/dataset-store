@@ -42,8 +42,9 @@ exports.up = function(knex) {
         .references('uuid')
         .inTable('headers')
         .notNull();
-      t.string('name').notNull();
-      t.string('datatype').notNull();
+      t.string('name', 255).notNull();
+      t.string('datatype', 255).notNull();
+      t.integer('position', 255).notNull();
     }),
   ]);
 };
