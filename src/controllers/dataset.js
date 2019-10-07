@@ -3,7 +3,7 @@ import uuidv4 from 'uuid/v4';
 import config from '../config/config';
 import Header from './header';
 import { Dataset, Column } from '../models';
-import Scripts from '../utils';
+import { Scripts } from '../utils';
 
 const downloadDataset = async (req, res) => {
   const { uuid } = req.params;
@@ -81,7 +81,8 @@ const handleDatasetHeader = async (req, res) => {
                   payload: { dataset: result[0], header: result[1] },
                 }); // Success!
               })
-              .catch(() => {
+              .catch((err) => {
+                console.log(err);
                 res.sendStatus(500); // Internal Server Error!
               });
           });
@@ -115,7 +116,8 @@ const handleDatasetHeader = async (req, res) => {
                   payload: { dataset: result[0], header: result[1] },
                 });
               })
-              .catch(() => {
+              .catch((err) => {
+                console.log(err);
                 res.sendStatus(500); // Internal Server Error!
               });
           })
