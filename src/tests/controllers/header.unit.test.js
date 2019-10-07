@@ -14,9 +14,7 @@ describe('Test Header Controller methods', () => {
 
   const stubHeaderGetById = sinon.stub(Model, 'getById');
   const stubHeaderCreate = sinon.stub(Model, 'create');
-  const stubHeaderDelete = sinon.stub(mockedHeader, 'delete');
 
-  const stubDownloadHeader = sinon.stub(mockedHeader, 'downloadStream');
   const stubUploadHeader = sinon.stub(mockedHeader, 'uploadFile');
 
   const mockedStream = new PassThrough();
@@ -32,24 +30,15 @@ describe('Test Header Controller methods', () => {
       });
       const res = httpMocks.createResponse();
 
-      const result = await Controller.downloadHeader(req, res);
+      const result = await Controller.getById(req, res);
 
       expect(result.statusCode).toBe(expectedCode);
     };
 
     it('Resolves downloadHeader', () => {
       stubHeaderGetById.resolves(mockedHeader);
-      stubDownloadHeader.resolves(mockedStream);
 
       headerGetByIdVerify(200);
-    });
-
-    it('Rejects downloadHeader', () => {
-      stubHeaderGetById.resolves(mockedHeader);
-      stubDownloadHeader.rejects('S3Error');
-      stubHeaderDelete.resolves(true);
-
-      headerGetByIdVerify(500);
     });
 
     it('Rejects getById model, invalid key', () => {

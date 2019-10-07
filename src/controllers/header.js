@@ -2,18 +2,11 @@ import uuidv4 from 'uuid/v4';
 import config from '../config/config';
 import { Header } from '../models';
 
-const downloadHeader = async (req, res) => {
-  const { uuid } = req.params;
-  await Header.getById(uuid)
+const getById = async (req, res) => {
+  const { headerId } = req.params;
+  await Header.getById(headerId)
     .then((header) => {
-      header
-        .downloadStream()
-        .then((stream) => {
-          stream.pipe(res);
-        })
-        .catch(() => {
-          res.sendStatus(500);
-        });
+      res.status(200).json({ payload: header });
     })
     .catch((err) => {
       if (err.message === 'The specified key does not exist.') {
@@ -48,6 +41,6 @@ const uploadHeader = async ([file]) => {
 };
 
 module.exports = {
-  downloadHeader,
+  getById,
   uploadHeader,
 };

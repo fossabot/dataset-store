@@ -15,7 +15,6 @@ describe('Test Experiment Controller methods', () => {
     'data.csv'
   );
 
-  const stubDownloadDataset = sinon.stub(mockedDataset, 'downloadStream');
   const stubUploadDataset = sinon.stub(mockedDataset, 'uploadFile');
 
   const mockedStream = new PassThrough();
@@ -31,23 +30,15 @@ describe('Test Experiment Controller methods', () => {
       });
       const res = httpMocks.createResponse();
 
-      const result = await Controller.downloadDataset(req, res);
+      const result = await Controller.getById(req, res);
 
       expect(result.statusCode).toBe(expectedCode);
     };
 
     it('Resolves downloadDatase', () => {
       stubDatasetGetById.resolves(mockedDataset);
-      stubDownloadDataset.resolves(mockedStream);
 
       datasetGetByIdVerify(200);
-    });
-
-    it('Rejects downloadDatase', () => {
-      stubDatasetGetById.resolves(mockedDataset);
-      stubDownloadDataset.rejects('S3Error');
-
-      datasetGetByIdVerify(500);
     });
 
     it('Rejects getById model, invalid key', () => {

@@ -10,6 +10,6 @@ router.use(Bucket.verifyBucket);
 
 router.use('/:headerId/columns', ColumnRoutes);
 
-router.get('/:uuid', Header.downloadHeader);
+router.get('/:headerId', Header.getById);
 
 export default router;

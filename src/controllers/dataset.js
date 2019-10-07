@@ -5,18 +5,11 @@ import Header from './header';
 import { Dataset, Column } from '../models';
 import { Scripts } from '../utils';
 
-const downloadDataset = async (req, res) => {
-  const { uuid } = req.params;
-  await Dataset.getById(uuid)
+const getById = async (req, res) => {
+  const { datasetId } = req.params;
+  await Dataset.getById(datasetId)
     .then((dataset) => {
-      dataset
-        .downloadStream()
-        .then((stream) => {
-          stream.pipe(res);
-        })
-        .catch(() => {
-          res.sendStatus(500);
-        });
+      res.status(200).json({ payload: dataset });
     })
     .catch((err) => {
       if (err.message === 'The specified key does not exist.') {
@@ -133,7 +126,7 @@ const handleDatasetHeader = async (req, res) => {
 };
 
 module.exports = {
-  downloadDataset,
+  getById,
   handleDatasetHeader,
   uploadDataset,
 };
