@@ -6,15 +6,13 @@
     "collectCoverageFrom": [
       "src/*/*.js",
       "!src/config/*.js"
-    ],
-    "cache": false,
-    "cacheDirectory": "./tmp/jest"
+    ]
   },
   "scripts": {
     "start": "nodemon --exec babel-node src/server.js",
     "docker-start": "echo \"Docker container running on port $CONTAINER_PORT!\" && npm run start",
     "test": "npx jest",
-    "test-coverage": "npx jest --coverage --no-cache --runInBand --silent"
+    "test-coverage": "npx jest --coverage --silent"
   },
   "dependencies": {
     "core-js": "^3.2.1",
