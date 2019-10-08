@@ -27,9 +27,9 @@ const getAll = async (req, res) => {
 };
 
 const getById = async (req, res) => {
-  const { uuid } = req.params;
+  const { columnId } = req.params;
 
-  await Column.getById(uuid)
+  await Column.getById(columnId)
     .then((column) => {
       res.status(200).json({ payload: column });
     })
@@ -46,12 +46,12 @@ const getById = async (req, res) => {
 };
 
 const update = async (req, res) => {
-  const { uuid } = req.params;
+  const { columnId } = req.params;
   const { datatype } = req.body;
 
   await validateDatatype(datatype)
     .then(async () => {
-      await Column.getById(uuid)
+      await Column.getById(columnId)
         .then((column) => {
           column
             .update(datatype)
