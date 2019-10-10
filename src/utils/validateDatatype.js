@@ -9,6 +9,4 @@ const validateDatatype = async (datatype) => {
   });
 };
 
-module.exports = {
-  validateDatatype,
-};
+export default validateDatatype;

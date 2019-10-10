@@ -50,15 +50,17 @@ const update = async (req, res) => {
         })
         .catch((err) => {
           console.error(err);
-          res.sendStatus(500);
+          if (err.message === 'Invalid datatype.') {
+            res.status(400).json({ message: 'Invalid datatype.' });
+          } else {
+            res.sendStatus(500);
+          }
         });
     })
     .catch((err) => {
       console.error(err);
       if (err.message === 'Invalid UUID.') {
         res.status(400).json({ message: `Column UUID doesn't exists.` });
-      } else if (err.message === 'Invalid datatype.') {
-        res.status(400).json({ message: 'Invalid datatype.' });
       } else {
         res.sendStatus(500);
       }
@@ -75,6 +77,7 @@ const create = async (req, res) => {
       res.status(200).json({ payload: result });
     })
     .catch((err) => {
+      console.error(err);
       if (err.message === 'Invalid datatype.') {
         res.status(400).json({ message: 'Invalid datatype.' });
       } else {

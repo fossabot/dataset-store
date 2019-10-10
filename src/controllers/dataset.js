@@ -76,7 +76,11 @@ const handleDatasetHeader = async (req, res) => {
               })
               .catch((err) => {
                 console.log(err);
-                res.sendStatus(500); // Internal Server Error!
+                if (err.message === 'Invalid datatype.') {
+                  res.status(400).json({ message: 'Invalid datatype.' });
+                } else {
+                  res.sendStatus(500); // Internal Server Error!
+                }
               });
           });
         })
@@ -111,7 +115,11 @@ const handleDatasetHeader = async (req, res) => {
               })
               .catch((err) => {
                 console.log(err);
-                res.sendStatus(500); // Internal Server Error!
+                if (err.message === 'Invalid datatype.') {
+                  res.status(400).json({ message: 'Invalid datatype.' });
+                } else {
+                  res.sendStatus(500); // Internal Server Error!
+                }
               });
           })
           .catch(() => {
