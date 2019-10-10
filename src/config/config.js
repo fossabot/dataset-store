@@ -9,8 +9,8 @@ module.exports = {
   MINIO_BUCKET: process.env.MINIO_BUCKET || 'uploads',
   MINIO_UPLOAD_FOLDER_NAME: process.env.MINIO_UPLOAD_FOLDER_NAME || 'uploads',
   VALID_DATATYPES: process.env.VALID_DATATYPES.split(',') || [
-    'Numerical',
-    'Categorical',
-    'Datetime',
+    'numerical',
+    'categorical',
+    'date',
   ],
 };
