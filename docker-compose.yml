@@ -27,10 +27,8 @@ services:
     volumes:
       - ./data:/var/lib/mysql
     environment:
-      - MYSQL_USER=${DB_USER:-user}
-      - MYSQL_PASSWORD=${DB_PASSWORD:-secret}
       - MYSQL_DATABASE=${DB_DATABASE:-projects}
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD:-supersecret}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD:-secret}
 
   minio:
     container_name: '${MINIO_HOST:-minio}'
