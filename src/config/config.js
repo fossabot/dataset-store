@@ -8,9 +8,7 @@ module.exports = {
   MINIO_SECRET_KEY: process.env.MINIO_SECRET_KEY || 'super-secret',
   MINIO_BUCKET: process.env.MINIO_BUCKET || 'uploads',
   MINIO_UPLOAD_FOLDER_NAME: process.env.MINIO_UPLOAD_FOLDER_NAME || 'uploads',
-  VALID_DATATYPES: process.env.VALID_DATATYPES.split(',') || [
-    'numerical',
-    'categorical',
-    'date',
-  ],
+  VALID_DATATYPES: process.env.VALID_DATATYPES
+    ? process.env.VALID_DATATYPE.split(',')
+    : ['numerical', 'categorical', 'date'],
 };
