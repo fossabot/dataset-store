@@ -12,10 +12,10 @@ services:
       - minio
     environment:
       NODE_ENV: development
-      HOST_PORT: ${HOST_PORT:-3000}
-      CONTAINER_PORT: ${CONTAINER_PORT:-3000}
+      HOST_PORT: ${HOST_PORT:-4000}
+      CONTAINER_PORT: ${CONTAINER_PORT:-4000}
     ports:
-      - ${CONTAINER_PORT:-3000}:${HOST_PORT:-3000}
+      - ${CONTAINER_PORT:-4000}:${HOST_PORT:-4000}
     command:
       ["-c", "npm install && /opt/wait-for.sh ${DB_HOST:-mysql}:${DB_PORT:-3306} && knex migrate:latest && npm run docker-start",]
     entrypoint: ["/bin/sh"]
@@ -28,7 +28,7 @@ services:
       - ./data:/var/lib/mysql
     environment:
       - MYSQL_DATABASE=${DB_DATABASE:-projects}
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD:-secret}
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
 
   minio:
     container_name: '${MINIO_HOST:-minio}'

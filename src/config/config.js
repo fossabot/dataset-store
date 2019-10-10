@@ -1,7 +1,7 @@
 import 'dotenv/config';
 
 module.exports = {
-  PORT: process.env.HOST_PORT || 3000,
+  PORT: process.env.HOST_PORT || 4000,
   MINIO_HOST: process.env.MINIO_HOST || 'minio',
   MINIO_PORT: parseInt(process.env.MINIO_PORT, 10) || 9000,
   MINIO_ACCESS_KEY: process.env.MINIO_ACCESS_KEY || 'secret',
@@ -9,6 +9,6 @@ module.exports = {
   MINIO_BUCKET: process.env.MINIO_BUCKET || 'uploads',
   MINIO_UPLOAD_FOLDER_NAME: process.env.MINIO_UPLOAD_FOLDER_NAME || 'uploads',
   VALID_DATATYPES: process.env.VALID_DATATYPES
-    ? process.env.VALID_DATATYPE.split(',')
+    ? process.env.VALID_DATATYPES.split(',')
     : ['numerical', 'categorical', 'date'],
 };
