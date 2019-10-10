@@ -1,4 +1,5 @@
 import { Knex } from '../config';
+import { validateDatatype } from '../utils';
 
 class Column {
   constructor(uuid, headerId, name, datatype, position) {
@@ -57,18 +58,24 @@ class Column {
 
   static async create(uuid, name, datatype, position, headerId) {
     return new Promise((resolve, reject) => {
-      Knex.insert({
-        uuid,
-        name,
-        datatype,
-        headerId,
-        position,
-      })
-        .into('columns')
+      validateDatatype(datatype)
         .then(() => {
-          resolve(
-            this.fromDBRecord({ uuid, name, datatype, position, headerId })
-          );
+          Knex.insert({
+            uuid,
+            name,
+            datatype,
+            headerId,
+            position,
+          })
+            .into('columns')
+            .then(() => {
+              resolve(
+                this.fromDBRecord({ uuid, name, datatype, position, headerId })
+              );
+            })
+            .catch((err) => {
+              reject(err);
+            });
         })
         .catch((err) => {
           reject(err);
@@ -80,12 +87,18 @@ class Column {
     const datatype = newDatatype || this.datatype;
 
     return new Promise((resolve, reject) => {
-      Knex.update({ datatype })
-        .from('columns')
-        .where('uuid', '=', this.uuid)
+      validateDatatype(datatype)
         .then(() => {
-          this.datatype = datatype;
-          resolve(this);
+          Knex.update({ datatype })
+            .from('columns')
+            .where('uuid', '=', this.uuid)
+            .then(() => {
+              this.datatype = datatype;
+              resolve(this);
+            })
+            .catch((err) => {
+              reject(err);
+            });
         })
         .catch((err) => {
           reject(err);
