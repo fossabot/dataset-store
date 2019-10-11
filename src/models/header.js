@@ -75,6 +75,16 @@ class Header {
     });
   }
 
+  downloadFile() {
+    return new Promise((resolve, reject) => {
+      const path = `headers/${this.uuid}.txt`;
+      minioClient.fGetObject(this.bucketName, this.uuid, path, (err) => {
+        if (err) reject(err);
+        resolve(path);
+      });
+    });
+  }
+
   async delete() {
     return new Promise((resolve, reject) => {
       Knex.delete({})
