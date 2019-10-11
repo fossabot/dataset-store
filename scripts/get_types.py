@@ -7,4 +7,4 @@ from datatype import Header
 
 HEADER = Header.get_header_from_txt(sys.argv[1])
 
-print(HEADER.header)
+print(HEADER.get_lines_json())

@@ -1,5 +1,6 @@
 import { Knex } from '../config';
-import { validateDatatype } from '../utils';
+import { validateDatatype, Scripts } from '../utils';
+import Header from './header';
 
 class Column {
   constructor(uuid, headerId, name, datatype, position) {
@@ -93,8 +94,20 @@ class Column {
             .from('columns')
             .where('uuid', '=', this.uuid)
             .then(() => {
-              this.datatype = datatype;
-              resolve(this);
+              Header.getById(this.headerId).then((header) => {
+                header.downloadFile().then((path) => {
+                  Scripts.updateHeader(path, this.position, newDatatype)
+                    .then(() => {
+                      header.uploadFile({ path }).then(() => {
+                        this.datatype = datatype;
+                        resolve(this);
+                      });
+                    })
+                    .catch((err) => {
+                      reject(err);
+                    });
+                });
+              });
             })
             .catch((err) => {
               reject(err);

@@ -68,8 +68,22 @@ const getTypesFromHeader = (path) => {
   });
 };
 
+const updateHeader = (path, position, newDatatype) => {
+  const options = {
+    args: [path, position, newDatatype],
+  };
+
+  return new Promise((resolve, reject) => {
+    PythonShell.run('scripts/update_header.py', options, (err, results) => {
+      if (err) reject(err);
+      resolve(results);
+    });
+  });
+};
+
 module.exports = {
   inferDatatype,
   getColumnNames,
   getTypesFromHeader,
+  updateHeader,
 };
