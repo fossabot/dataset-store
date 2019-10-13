@@ -8,6 +8,7 @@ HEADER = Header.get_header_from_txt(sys.argv[1])
 LINES = HEADER.update_line(int(sys.argv[2]), sys.argv[3])
 
 with open(sys.argv[1], 'w') as f:
-    f.writelines(LINES)
+    for line in LINES:
+        f.write(line + '\n')
 
-print(LINES)
+print(LINES[0])
