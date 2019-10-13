@@ -10,5 +10,5 @@ module.exports = {
   MINIO_UPLOAD_FOLDER_NAME: process.env.MINIO_UPLOAD_FOLDER_NAME || 'uploads',
   VALID_DATATYPES: process.env.VALID_DATATYPES
     ? process.env.VALID_DATATYPES.split(',')
-    : ['numerical', 'categorical', 'date'],
+    : ['numeric', 'factor', 'datetime'],
 };
