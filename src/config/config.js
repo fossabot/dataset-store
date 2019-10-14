@@ -13,5 +13,5 @@ module.exports = {
     : ['numeric', 'factor', 'datetime'],
   RESULT_LENGTH: process.env.RESULT_LENGTH
     ? parseInt(process.env.RESULT_LENGTH, 10)
-    : 10,
+    : 11,
 };
