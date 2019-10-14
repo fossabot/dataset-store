@@ -26,21 +26,44 @@ const getResult = async (req, res) => {
 
   const file = `${task}.csv`;
 
-  getStream(experimentId, file).then((stream) => {
-    streamToString(stream).then((result) => {
-      const lines = result
-        .split('\n')
-        .slice(0, Config.RESULT_LENGTH)
-        .map((r) => {
-          return r.split(';');
+  getStream(experimentId, file)
+    .then((stream) => {
+      streamToString(stream).then((result) => {
+        const lines = result
+          .split('\n')
+          .slice(0, Config.RESULT_LENGTH)
+          .map((r) => {
+            return r.split(';');
+          });
+
+        const header = lines[0].map((e) => {
+          const dataIndex = e
+            .toLowerCase()
+            .replace(/(\r\n\s|\n|\r|\s)/gm, '')
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '');
+
+          return { title: e, dataIndex };
         });
 
-      const header = lines[0];
-      const rows = lines.slice(1);
+        const rows = lines.slice(1).map((row, key) => {
+          const rowObject = { key };
+          header.forEach(({ dataIndex }, i) => {
+            rowObject[dataIndex] = row[i];
+          });
+          return rowObject;
+        });
 
-      res.status(200).json({ payload: { header, rows } });
+        res.status(200).json({ payload: { header, rows } });
+      });
+    })
+    .catch((err) => {
+      if (err.message === 'The specified key does not exist.') {
+        res.status(400).json({ message: `Invalid experimentId` }); // File doesn't exist
+      } else {
+        res.sendStatus(500); // Internal Server Error!
+      }
     });
-  });
 };
 
 const getConfusionMatrix = async (req, res) => {
