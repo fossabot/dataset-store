@@ -23,10 +23,10 @@ const getById = async (req, res) => {
   return res;
 };
 
-const uploadDataset = async ([file]) => {
+const uploadDataset = async ([file], experimentId) => {
   return new Promise((resolve, reject) => {
     const uuid = uuidv4();
-    Dataset.create(uuid, config.MINIO_BUCKET, file)
+    Dataset.create(uuid, config.MINIO_BUCKET, file, experimentId)
       .then((dataset) => {
         dataset
           .uploadFile(file)
@@ -44,12 +44,13 @@ const uploadDataset = async ([file]) => {
 };
 
 const handleDatasetHeader = async (req, res) => {
+  const { experimentId } = req.body;
   const { dataset, header } = req.files;
 
   if (dataset) {
     if (header) {
-      const upDataset = uploadDataset(dataset);
-      const upHeader = Header.uploadHeader(header);
+      const upDataset = uploadDataset(dataset, experimentId);
+      const upHeader = Header.uploadHeader(header, experimentId);
 
       Promise.all([upDataset, upHeader])
         .then((result) => {
@@ -89,10 +90,11 @@ const handleDatasetHeader = async (req, res) => {
         });
     } else {
       Scripts.inferDatatype(dataset[0].path).then(([columns, headerPath]) => {
-        const upDataset = uploadDataset(dataset);
-        const upHeader = Header.uploadHeader([
-          { originalname: 'inferedHeader', path: headerPath },
-        ]);
+        const upDataset = uploadDataset(dataset, experimentId);
+        const upHeader = Header.uploadHeader(
+          [{ originalname: 'inferedHeader', path: headerPath }],
+          experimentId
+        );
 
         Promise.all([upDataset, upHeader])
           .then((result) => {
