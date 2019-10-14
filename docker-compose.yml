@@ -31,7 +31,7 @@ services:
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
 
   minio:
-    container_name: '${MINIO_HOST:-minio}'
+    container_name: '${MINIO_HOST:-minio-service}'
     image: minio/minio
     volumes:
       - ./data-minio:/var/lib/minio
