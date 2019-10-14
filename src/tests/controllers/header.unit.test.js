@@ -8,7 +8,7 @@ import { Header as Model } from '../../models';
 describe('Test Header Controller methods', () => {
   const mockedHeader = new Model(
     '24ad2ae1-e6b3-4d30-8a5c-047f6774dc3e',
-    'uploads',
+    'mlpipeline',
     'data.csv'
   );
 

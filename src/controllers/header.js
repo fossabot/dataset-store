@@ -20,10 +20,10 @@ const getById = async (req, res) => {
   return res;
 };
 
-const uploadHeader = async ([file]) => {
+const uploadHeader = async ([file], experimentId) => {
   return new Promise((resolve, reject) => {
     const uuid = uuidv4();
-    Header.create(uuid, config.MINIO_BUCKET, file)
+    Header.create(uuid, config.MINIO_BUCKET, file, experimentId)
       .then((header) => {
         header
           .uploadFile(file)
