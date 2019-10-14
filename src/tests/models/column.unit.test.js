@@ -170,12 +170,12 @@ describe('Test Column Model methods', () => {
       );
 
       columnMocked
-        .update('Categorical')
+        .update('factor')
         .then((result) => {
-          expect(result.datatype).toBe('Categorical');
+          expect(result.datatype).toBe('factor');
 
           columnMocked.update().then((result_) => {
-            expect(result_.datatype).toBe('Categorical');
+            expect(result_.datatype).toBe('factor');
           });
         })
         .catch((err) => {

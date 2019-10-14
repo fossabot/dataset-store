@@ -10,7 +10,7 @@ module.exports = {
   MINIO_UPLOAD_FOLDER_NAME: process.env.MINIO_UPLOAD_FOLDER_NAME || 'uploads',
   VALID_DATATYPES: process.env.VALID_DATATYPES
     ? process.env.VALID_DATATYPES.split(',')
-    : ['numerical', 'categorical', 'date'],
+    : ['numeric', 'factor', 'datetime'],
   RESULT_LENGTH: process.env.RESULT_LENGTH
     ? parseInt(process.env.RESULT_LENGTH, 10)
     : 10,

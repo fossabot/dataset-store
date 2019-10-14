@@ -156,7 +156,7 @@ describe('Test Column Controller methods', () => {
 
       stubColumnGetById.resolves(columnMocked);
 
-      columnUpdateVerify({ datatype: 'Categorical' }, 200);
+      columnUpdateVerify({ datatype: 'factor' }, 200);
     });
 
     it('Rejects update model', () => {
@@ -164,19 +164,19 @@ describe('Test Column Controller methods', () => {
 
       stubColumnGetById.resolves(columnMocked);
 
-      columnUpdateVerify({ datatype: 'Categorical' }, 500);
+      columnUpdateVerify({ datatype: 'factor' }, 500);
     });
 
     it('Rejects getById model, forced internal server error', () => {
       stubColumnGetById.rejects(Error('Forced error'));
 
-      columnUpdateVerify({ datatype: 'Categorical' }, 500);
+      columnUpdateVerify({ datatype: 'factor' }, 500);
     });
 
     it('Rejects getById model, invalid uuid', () => {
       stubColumnGetById.rejects(Error('Invalid UUID.'));
 
-      columnUpdateVerify({ datatype: 'Categorical' }, 400);
+      columnUpdateVerify({ datatype: 'factor' }, 400);
     });
 
     it('Send invalid datatype', () => {
