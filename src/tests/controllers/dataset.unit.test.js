@@ -11,7 +11,7 @@ describe('Test Experiment Controller methods', () => {
 
   const mockedDataset = new Model(
     '2864d96c-9171-43d1-9b89-af9828c30e61',
-    'uploads',
+    'mlpipeline',
     'data.csv'
   );
 
