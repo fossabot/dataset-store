@@ -182,6 +182,7 @@ curl -X GET \
   http://localhost:3000/results/37abdc18-df28-4ab9-9f8d-9a6d2db1eb76 \
   -d '{
 	    "task": "feature-temporal"
+      "headerId": "6415aac6-a34f-4c5d-bf98-0853888a6c37"
   }'
 ```
 
