@@ -110,7 +110,8 @@ curl -X POST \
   http://localhost:3000/datasets/ \
   -H 'Content-Type: multipart/form-data' \
   -F dataset=@/l/disk0/mferraz/Documentos/platia/BigML_Dataset_Machine_Failure_ok.csv \
-  -F header=@/l/disk0/mferraz/Documentos/platia/feature_type_ok.txt
+  -F header=@/l/disk0/mferraz/Documentos/platia/feature_type_ok.txt \
+  -F experimentId=a2958bc1-a2c5-424f-bcb3-cf4701f4a423
 ```
 
 Or:
@@ -119,7 +120,8 @@ Or:
 curl -X POST \
   http://localhost:3000/datasets/ \
   -H 'Content-Type: multipart/form-data' \
-  -F dataset=@/l/disk0/mferraz/Documentos/platia/BigML_Dataset_Machine_Failure_ok.csv
+  -F dataset=@/l/disk0/mferraz/Documentos/platia/BigML_Dataset_Machine_Failure_ok.csv \
+  -F experimentId=a2958bc1-a2c5-424f-bcb3-cf4701f4a423
 ```
 
 In this last case, the API will infer columns types.

@@ -12,7 +12,7 @@ describe('Test Dataset Model methods', () => {
 
   const mockedDataset = new Dataset(
     '2864d96c-9171-43d1-9b89-af9828c30e61',
-    'uploads',
+    'mlpipeline',
     'data.csv'
   );
 
@@ -23,7 +23,7 @@ describe('Test Dataset Model methods', () => {
           expect(result).not.toBeNull();
           expect(result).toEqual({
             uuid: '2864d96c-9171-43d1-9b89-af9828c30e61',
-            bucketName: 'uploads',
+            bucketName: 'mlpipeline',
             originalName: 'data.csv',
           });
         })
@@ -38,7 +38,7 @@ describe('Test Dataset Model methods', () => {
         where: sinon.stub().returnsThis(),
         first: sinon.stub().resolves({
           uuid: '2864d96c-9171-43d1-9b89-af9828c30e61',
-          bucketName: 'uploads',
+          bucketName: 'mlpipeline',
           originalName: 'data.csv',
         }),
       });
@@ -69,14 +69,14 @@ describe('Test Dataset Model methods', () => {
 
   describe('Test create Dataset method', () => {
     const datasetCreateVerify = () => {
-      Dataset.create('2864d96c-9171-43d1-9b89-af9828c30e61', 'uploads', {
+      Dataset.create('2864d96c-9171-43d1-9b89-af9828c30e61', 'mlpipeline', {
         originalname: 'data.csv',
       })
         .then((result) => {
           expect(result).not.toBeNull();
           expect(result).toEqual({
             uuid: '2864d96c-9171-43d1-9b89-af9828c30e61',
-            bucketName: 'uploads',
+            bucketName: 'mlpipeline',
             originalName: 'data.csv',
           });
         })

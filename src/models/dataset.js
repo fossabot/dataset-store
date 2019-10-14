@@ -2,14 +2,20 @@ import { Knex } from '../config';
 import minioClient from './store';
 
 class Dataset {
-  constructor(uuid, bucketName, originalName) {
+  constructor(uuid, bucketName, originalName, path) {
     this.uuid = uuid;
     this.bucketName = bucketName;
     this.originalName = originalName;
+    this.path = path;
   }
 
   static fromDBRecord(record) {
-    return new this(record.uuid, record.bucketName, record.originalName);
+    return new this(
+      record.uuid,
+      record.bucketName,
+      record.originalName,
+      record.path
+    );
   }
 
   static getById(uuid) {
@@ -31,17 +37,19 @@ class Dataset {
     });
   }
 
-  static create(uuid, bucketName, file) {
+  static create(uuid, bucketName, file, experimentId) {
+    const path = `${experimentId}/${uuid}`;
     const originalName = file.originalname;
     return new Promise((resolve, reject) => {
       Knex.insert({
         uuid,
         bucketName,
         originalName,
+        path,
       })
         .into('datasets')
         .then(() => {
-          resolve(this.fromDBRecord({ uuid, bucketName, originalName }));
+          resolve(this.fromDBRecord({ uuid, bucketName, originalName, path }));
         })
         .catch((err) => {
           reject(err);
@@ -53,7 +61,7 @@ class Dataset {
     return new Promise((resolve, reject) => {
       minioClient.fPutObject(
         this.bucketName,
-        this.uuid,
+        this.path,
         file.path,
         {
           'Content-Type': 'application/octet-stream',
@@ -68,7 +76,7 @@ class Dataset {
 
   downloadStream() {
     return new Promise((resolve, reject) => {
-      minioClient.getObject(this.bucketName, this.uuid, (err, stream) => {
+      minioClient.getObject(this.bucketName, this.path, (err, stream) => {
         if (err) reject(err);
         resolve(stream);
       });

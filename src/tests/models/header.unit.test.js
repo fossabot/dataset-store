@@ -13,7 +13,7 @@ describe('Test Header Model methods', () => {
 
   const mockedHeader = new Header(
     '24ad2ae1-e6b3-4d30-8a5c-047f6774dc3e',
-    'uploads',
+    'mlpipeline',
     'data.csv'
   );
 
@@ -24,7 +24,7 @@ describe('Test Header Model methods', () => {
           expect(result).not.toBeNull();
           expect(result).toEqual({
             uuid: '24ad2ae1-e6b3-4d30-8a5c-047f6774dc3e',
-            bucketName: 'uploads',
+            bucketName: 'mlpipeline',
             originalName: 'data.csv',
           });
         })
@@ -39,7 +39,7 @@ describe('Test Header Model methods', () => {
         where: sinon.stub().returnsThis(),
         first: sinon.stub().resolves({
           uuid: '24ad2ae1-e6b3-4d30-8a5c-047f6774dc3e',
-          bucketName: 'uploads',
+          bucketName: 'mlpipeline',
           originalName: 'data.csv',
         }),
       });
@@ -70,14 +70,14 @@ describe('Test Header Model methods', () => {
 
   describe('Test create Header method', () => {
     const headerCreateVerify = () => {
-      Header.create('24ad2ae1-e6b3-4d30-8a5c-047f6774dc3e', 'uploads', {
+      Header.create('24ad2ae1-e6b3-4d30-8a5c-047f6774dc3e', 'mlpipeline', {
         originalname: 'data.csv',
       })
         .then((result) => {
           expect(result).not.toBeNull();
           expect(result).toEqual({
             uuid: '24ad2ae1-e6b3-4d30-8a5c-047f6774dc3e',
-            bucketName: 'uploads',
+            bucketName: 'mlpipeline',
             originalName: 'data.csv',
           });
         })
