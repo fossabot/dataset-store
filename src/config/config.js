@@ -11,4 +11,7 @@ module.exports = {
   VALID_DATATYPES: process.env.VALID_DATATYPES
     ? process.env.VALID_DATATYPES.split(',')
     : ['numeric', 'factor', 'datetime'],
+  RESULT_LENGTH: process.env.RESULT_LENGTH
+    ? parseInt(process.env.RESULT_LENGTH, 10)
+    : 11,
 };

@@ -170,3 +170,26 @@ curl -X PATCH \
         "datatype": "DateTime"
     }'
 ```
+
+### Results
+
+**Get result table preview:** <br>
+method: GET <br>
+url: /results/:experimentId
+
+```
+curl -X GET \
+  http://localhost:3000/results/37abdc18-df28-4ab9-9f8d-9a6d2db1eb76 \
+  -d '{
+	    "task": "feature-temporal"
+  }'
+```
+
+**Get confusion matrix:** <br>
+method: GET <br>
+url: /results/:experimentId/confusionMatrix
+
+```
+curl -X GET \
+  http://localhost:4000/results/37abdc18-df28-4ab9-9f8d-9a6d2db1eb76/confusionMatrix
+```
