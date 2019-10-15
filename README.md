@@ -173,6 +173,15 @@ curl -X PATCH \
 
 ### Results
 
+**Get Dataset table preview:** <br>
+method: GET <br>
+url: /results/:experimentId/dataset/:datasetId
+
+```
+curl -X GET \
+  http://localhost:3000/results/a2958bc1-a2c5-424f-bcb3-cf4701f4a423/dataset/c11e5412-3217-4912-aa2d-3f34a21d215d
+```
+
 **Get result table preview:** <br>
 method: GET <br>
 url: /results/:experimentId/:task/:headerId
@@ -188,5 +197,5 @@ url: /results/:experimentId/confusionMatrix
 
 ```
 curl -X GET \
-  http://localhost:4000/results/37abdc18-df28-4ab9-9f8d-9a6d2db1eb76/confusionMatrix
+  http://localhost:3000/results/37abdc18-df28-4ab9-9f8d-9a6d2db1eb76/confusionMatrix
 ```
