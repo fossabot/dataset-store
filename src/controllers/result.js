@@ -130,28 +130,86 @@ const getResult = async (req, res) => {
   }
 };
 
-const getConfusionMatrix = async (req, res) => {
+const verifyIfObjectExists = (objectPath) => {
+  return new Promise((resolve, reject) => {
+    minioClient.statObject(Config.MINIO_BUCKET, objectPath, (err) => {
+      if (err) {
+        if (err.message === 'Not Found') {
+          resolve(false);
+        } else {
+          reject(err);
+        }
+      } else {
+        resolve(true);
+      }
+    });
+  });
+};
+
+const verifyPlotType = async (experimentId) => {
+  return new Promise((resolve, reject) => {
+    const verifyIfConfusionMatrixExists = verifyIfObjectExists(
+      `${experimentId}/confusion-matrix.png`
+    );
+    const verifyIfErrorDistributionExists = verifyIfObjectExists(
+      `${experimentId}/error-distribution.png`
+    );
+
+    Promise.all([
+      verifyIfConfusionMatrixExists,
+      verifyIfErrorDistributionExists,
+    ])
+      .then(([resultConfusionMatrix, resultErrorDistribution]) => {
+        if (resultConfusionMatrix) {
+          resolve('confusion-matrix');
+        }
+        if (resultErrorDistribution) {
+          resolve('error-distribution');
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        reject(err);
+      });
+  });
+};
+
+const getPlot = async (req, res) => {
   const { experimentId } = req.params;
 
-  const file = 'plot.png';
+  verifyPlotType(experimentId).then((plotType) => {
+    const objectPath = `${experimentId}/${plotType}.png`;
 
-  const objectPath = `${experimentId}/${file}`;
+    getStream(objectPath)
+      .then((stream) => {
+        stream.pipe(res);
+      })
+      .catch((err) => {
+        console.error(err);
+        if (err.message === 'The specified key does not exist.') {
+          res.status(400).json({ message: `Invalid experimentId` }); // File doesn't exist
+        } else {
+          res.sendStatus(500); // Internal Server Error!
+        }
+      });
+  });
+};
 
-  getStream(objectPath)
-    .then((stream) => {
-      stream.pipe(res);
+const getPlotType = async (req, res) => {
+  const { experimentId } = req.params;
+
+  verifyPlotType(experimentId)
+    .then((type) => {
+      res.status(200).json({ type });
     })
     .catch((err) => {
       console.error(err);
-      if (err.message === 'The specified key does not exist.') {
-        res.status(400).json({ message: `Invalid experimentId` }); // File doesn't exist
-      } else {
-        res.sendStatus(500); // Internal Server Error!
-      }
+      res.sendStatus(500);
     });
 };
 
 module.exports = {
   getResult,
-  getConfusionMatrix,
+  getPlot,
+  getPlotType,
 };
