@@ -61,8 +61,7 @@ const getOriginalFileColumnsLength = async (stream) => {
 };
 
 const getResult = async (req, res) => {
-  const { experimentId } = req.params;
-  const { task, headerId } = req.body;
+  const { experimentId, task, headerId } = req.params;
 
   const file = `${task}.csv`;
 
