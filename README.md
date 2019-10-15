@@ -191,11 +191,20 @@ curl -X GET \
   http://localhost:3000/results/37abdc18-df28-4ab9-9f8d-9a6d2db1eb76/feature-temporal/6415aac6-a34f-4c5d-bf98-0853888a6c37
 ```
 
-**Get confusion matrix:** <br>
+**Get plot:** <br>
 method: GET <br>
-url: /results/:experimentId/confusionMatrix
+url: /results/:experimentId/plot
 
 ```
 curl -X GET \
-  http://localhost:3000/results/37abdc18-df28-4ab9-9f8d-9a6d2db1eb76/confusionMatrix
+  http://localhost:3000/results/37abdc18-df28-4ab9-9f8d-9a6d2db1eb76/plot
+```
+
+**Get plot type:** <br>
+method: GET <br>
+url: /results/:experimentId/type
+
+```
+curl -X GET \
+  http://localhost:3000/results/37abdc18-df28-4ab9-9f8d-9a6d2db1eb76/type
 ```

@@ -6,6 +6,8 @@ const router = Router();
 
 router.get('/:experimentId/:task/:headerId', Result.getResult);
 
-router.get('/:experimentId/confusionMatrix', Result.getConfusionMatrix);
+router.get('/:experimentId/plot', Result.getPlot);
+
+router.get('/:experimentId/type', Result.getPlotType);
 
 export default router;
