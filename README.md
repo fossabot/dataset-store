@@ -17,6 +17,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Gitter](https://badges.gitter.im/platiagro/community.svg)](https://gitter.im/platiagro/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Known Vulnerabilities](https://snyk.io/test/github/platiagro/dataset-store/master/badge.svg?targetFile=package.json)](https://snyk.io/test/github/platiagro/dataset-store/master/?targetFile=package.json)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmiguelfferraz%2Fdataset-store.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmiguelfferraz%2Fdataset-store?ref=badge_shield)
 
 PlatIAgro Dataset Store microservice.
 
@@ -208,3 +209,7 @@ url: /results/:experimentId/type
 curl -X GET \
   http://localhost:3000/results/37abdc18-df28-4ab9-9f8d-9a6d2db1eb76/type
 ```
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmiguelfferraz%2Fdataset-store.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmiguelfferraz%2Fdataset-store?ref=badge_large)
